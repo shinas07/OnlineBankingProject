@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "navbar.html"%}
+<style>
+    /* Additional CSS for form styling */
+    .form-container {
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+    }
+
+    .form-title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-control:focus {
+        outline: 0;
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+    /* Hide the "Today" and "Clear" buttons in the date picker */
+
+</style>
+
+<div class="container">
+    <div class="form-container">
+        <h2 class="form-title">Registration Form</h2>
+        <form id="registrationForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="text" id="dob" name="dob" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" class="form-control" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" class="form-control" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" class="form-control" pattern="[0-9]{10}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" class="form-control" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="district">District:</label>
+                <select id="district" name="district" class="form-control" required>
+                    <option value="">Select District</option>
+                    {% for district in districts %}
+                        <option value={{district.id}}>{{ district.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="branch">Branch:</label>
+                <select id="branch" name="branch" class="form-control" required>
+                    <option value="">Select Branch</option>
+                    <!-- Add options dynamically using JavaScript -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="accountType">Account Type:</label>
+                <select id="accountType" name="accountType" class="form-control" required>
+                    <option value="">Select Account Type</option>
+                    <option value="savings">Savings Account</option>
+                    <option value="current">Current Account</option>
+                    <!-- Add more account types if needed -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Materials Provided:</label><br>
+                <input type="checkbox" id="debitCard" name="materials" value="debitCard">
+                <label for="debitCard">Debit Card</label><br>
+                <input type="checkbox" id="creditCard" name="materials" value="creditCard">
+                <label for="creditCard">Credit Card</label><br>
+                <input type="checkbox" id="chequeBook" name="materials" value="chequeBook">
+                <label for="chequeBook">Cheque Book</label><br>
+                <!-- Add more materials if needed -->
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" onclick="logout()">Logout</button>
+        </form>
+    </div>
+</div>
+
+<div id="messageContainer" class="message-container" style="display: none;">
+    <p id="message"></p>
+    <a href="#" id="returnLink" class="return-link">Return to Home Page</a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    // JavaScript for calculating age
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr('#dob', {
+            dateFormat: 'Y-m-d', // Date format
+            onChange: function(selectedDates, dateStr, instance) {
+                var dob = new Date(dateStr);
+                var today = new Date();
+                var age = Math.floor((today - dob) / (365.25 * 24 * 60 * 60 * 1000));
+                document.getElementById('age').value = age;
+            }
+        });
+    });
+    
+
+
+
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        submitForm();
+    });
+
+   
+    function submitForm() {
+        var formData = new FormData(document.getElementById('registrationForm'));
+        $.ajax({
+            url: '/form_view/',  // URL for the form submission endpoint
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+
+            
+                // Show sweet alert with success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Application Accepted',
+                    text: 'Your application has been successfully accepted.',
+                    confirmButtonText: 'Return to Home Page'
+                }).then((result) => {
+                    // Redirect to home page when the "Return to Home Page" button is clicked
+                    if (result.isConfirmed) {
+                        window.location.href = '/'; // Replace '/home' with the actual URL of your home page
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+           
+            
+                // Show sweet alert with error message
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An error occurred while processing your request. Please try again later.',
+                    confirmButtonText: 'OK'
+                });
+            }
+            
+        });
+    }
+
+
+    $(document).ready(function() {
+        $('#district').on('change', function() {
+            var selectedDistrictId = $(this).val();
+            $('#branch').empty(); // Clear existing options
+            if (selectedDistrictId) {
+                // AJAX request to fetch branches for the selected district
+                $.ajax({
+                    url: '/get_branches/',
+                    type: 'GET',
+                    data: {
+                        district_id: selectedDistrictId
+                    },
+                    success: function(data) {
+                        // Populate Branch dropdown with fetched branches
+                        $.each(data.branches, function(index, branch) {
+                            $('#branch').append($('<option>').val(branch.id).text(branch.name));
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        // Optionally handle errors
+                    }
+                });
+            }
+        });
+    });
+        
+</script>
+{% endblock %}

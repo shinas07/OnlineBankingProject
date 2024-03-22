@@ -1,0 +1,46 @@
+/* styles.css */
+
+.navbar {
+    background-color: #007bff; /* Blue color */
+}
+
+/* Navbar brand link color */
+.navbar-brand {
+    color: #fff; /* White color */
+}
+
+/* Navbar brand link hover color */
+.navbar-brand:hover {
+    color: #f8f9fa; /* Lighter shade of white */
+}
+
+/* Navbar toggler icon color */
+.navbar-toggler-icon {
+    color: #fff; /* White color */
+}
+
+/* Navbar links color */
+.navbar-nav .nav-link {
+    color: #fff; /* White color */
+}
+
+/* Navbar links hover color */
+.navbar-nav .nav-link:hover {
+    color: #f8f9fa; /* Lighter shade of white */
+}
+
+/* Navbar dropdown menu background color */
+.dropdown-menu {
+    background-color: #007bff; /* Blue color */
+}
+
+/* Navbar dropdown menu link color */
+.dropdown-menu .dropdown-item {
+    color: #fff; /* White color */
+}
+
+/* Navbar dropdown menu link hover color */
+.dropdown-menu .dropdown-item:hover {
+    background-color: #0056b3; /* Darker shade of blue */
+    color: #f8f9fa; /* Lighter shade of white */
+}

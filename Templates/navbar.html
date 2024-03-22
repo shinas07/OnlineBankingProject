@@ -1,0 +1,49 @@
+ {% extends 'base.html' %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white"> 
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Online Banking</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+            <ul class="navbar-nav ms-auto me-lg"> 
+                {% if user.is_authenticated  %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:logout' %}" style="color: black;">Logout</a> 
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:login' %}" style="color: black;">Login</a> 
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:register' %}" style="color: black;">Register</a> 
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav ms-auto"> 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;"> 
+                        Branches
+                    </a>
+                    <ul class="dropdown-menu  dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Kozhikode">Kozhikode</a></li> 
+                        <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Kochi">Kochi</a></li>
+                        <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Wayanad_district">Wayanad</a></li> 
+                        <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Malappuram_district">Malappuram</a></li> 
+                        <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/Thiruvananthapuram_district">Thiruvananthapuram</a></li>
+                    </ul>
+                </li>
+            </ul>
+            
+        </div>
+    </div>
+</nav>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  {% endblock %}

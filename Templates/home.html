@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "navbar.html"%}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    {% if user.is_authenticated %}
+                    <div class="text-center">
+                        <h1>Online Banking Platform</h1>
+                        <p class="text-center">Your application is still being processed. The result of your application will be sent to your email.</p>
+                    </div>
+                    {% else %}
+                    <h1 class="text-center mb-4">Welcome to Online Banking</h1>
+                    <form method="POST" action="{% url 'accounts:login' %}">
+                        {% csrf_token %}
+                        <div class="text-center">
+                            <button class="btn btn-primary" type="submit" name="showLogin">Login</button>
+                        </div>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

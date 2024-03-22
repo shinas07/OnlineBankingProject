@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'navbar.html' %}
+  <div class="container text-center mt-5">
+    <h2 class="text-light">To reveal the form, click the button</h2>
+    <button id="showFormBtn" class="btn btn-primary btn-lg mt-3">Click Here</button>
+    <div id="formContainer"></div>
+  </div>
+
+<script>
+    document.getElementById('showFormBtn').addEventListener('click', function() {
+        window.location.href = '{% url "show_form" %}';
+    });
+</script>
+
+{% endblock %}
+
